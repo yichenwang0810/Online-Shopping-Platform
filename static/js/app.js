@@ -84,3 +84,35 @@ async function checkout() {
         alert("Failed to place order.");
     }
 }
+
+// --- Wishlist Functionality ---
+async function addToWishlist(productId, userId) {
+    const response = await fetch(`/api/wishlist?user_id=${userId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_id: productId })
+    });
+
+    if (response.ok) {
+        alert("Added to wishlist!");
+    } else {
+        alert("Failed to add to wishlist.");
+    }
+}
+
+// --- Coupon Functionality ---
+async function applyCoupon(code) {
+    const response = await fetch('/api/coupons/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: code })
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+        alert(`Coupon applied! You get ${data.discount_percent}% off.`);
+        // Logic to update total price would go here
+    } else {
+        alert(data.detail || "Invalid coupon");
+    }
+}
